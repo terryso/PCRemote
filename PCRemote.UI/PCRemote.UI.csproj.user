@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PublishUrlHistory>c:\WorkShop\Code\Weibo\PCRemote\Publish\|D:\WorkShop\Code\Weibo\PCRemote\Publish\|D:\Code\Weibo\PCRemote\Publish\|publish\</PublishUrlHistory>
+    <InstallUrlHistory>http://pcremote.sinaapp.com/</InstallUrlHistory>
+    <SupportUrlHistory />
+    <UpdateUrlHistory>http://pcremote.sinaapp.com/</UpdateUrlHistory>
+    <BootstrapperUrlHistory />
+    <ErrorReportUrlHistory />
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>false</VerifyUploadedFiles>
+  </PropertyGroup>
+</Project>
