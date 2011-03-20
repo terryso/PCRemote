@@ -1,0 +1,9 @@
+C:\WorkShop\Code\Weibo\PCRemote\PCRemote.Core\bin\Debug\PCRemote.Core.dll
+C:\WorkShop\Code\Weibo\PCRemote\PCRemote.Core\bin\Debug\PCRemote.Core.pdb
+C:\WorkShop\Code\Weibo\PCRemote\PCRemote.Core\bin\Debug\Weibo.dll
+C:\WorkShop\Code\Weibo\PCRemote\PCRemote.Core\bin\Debug\Newtonsoft.Json.dll
+C:\WorkShop\Code\Weibo\PCRemote\PCRemote.Core\bin\Debug\SocialKit.LightRest.dll
+C:\WorkShop\Code\Weibo\PCRemote\PCRemote.Core\bin\Debug\Weibo.pdb
+C:\WorkShop\Code\Weibo\PCRemote\PCRemote.Core\obj\Debug\ResolveAssemblyReference.cache
+C:\WorkShop\Code\Weibo\PCRemote\PCRemote.Core\obj\Debug\PCRemote.Core.dll
+C:\WorkShop\Code\Weibo\PCRemote\PCRemote.Core\obj\Debug\PCRemote.Core.pdb

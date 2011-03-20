@@ -20,6 +20,7 @@ namespace PCRemote.Core
 
         public void Execute()
         {
+	    //todo:加入一些注释
             var temp = Environment.GetEnvironmentVariable("TEMP");
             var picPath = temp + "\\" + Guid.NewGuid() + ".jpg";
             ImageUtility.CaptureDesktop(picPath);
