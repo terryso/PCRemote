@@ -43,10 +43,18 @@
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.settingMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.customCommandMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
+            this.settingSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.exitMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuRecommend = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuHomePage = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSkill = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuCommand = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.groupAccount = new System.Windows.Forms.GroupBox();
             this.chkAutoStart = new System.Windows.Forms.CheckBox();
+            this.menuSupport = new System.Windows.Forms.ToolStripMenuItem();
             this.RightMenu.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.groupAccount.SuspendLayout();
@@ -136,7 +144,8 @@
             // MainMenu
             // 
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.settingMenu});
+            this.settingMenu,
+            this.menuHelp});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Size = new System.Drawing.Size(299, 25);
@@ -147,11 +156,11 @@
             // 
             this.settingMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.customCommandMenu,
-            this.退出ToolStripMenuItem,
+            this.settingSeparator,
             this.exitMenu});
             this.settingMenu.Name = "settingMenu";
-            this.settingMenu.Size = new System.Drawing.Size(44, 21);
-            this.settingMenu.Text = "设置";
+            this.settingMenu.Size = new System.Drawing.Size(59, 21);
+            this.settingMenu.Text = "设置(&S)";
             // 
             // customCommandMenu
             // 
@@ -160,17 +169,71 @@
             this.customCommandMenu.Text = "自定义命令";
             this.customCommandMenu.Click += new System.EventHandler(this.customCommandMenu_Click);
             // 
-            // 退出ToolStripMenuItem
+            // settingSeparator
             // 
-            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(133, 6);
+            this.settingSeparator.Name = "settingSeparator";
+            this.settingSeparator.Size = new System.Drawing.Size(133, 6);
             // 
             // exitMenu
             // 
             this.exitMenu.Name = "exitMenu";
             this.exitMenu.Size = new System.Drawing.Size(136, 22);
-            this.exitMenu.Text = "退出";
+            this.exitMenu.Text = "退出(&X)";
             this.exitMenu.Click += new System.EventHandler(this.exitMenu_Click);
+            // 
+            // menuHelp
+            // 
+            this.menuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuSupport,
+            this.menuRecommend,
+            this.menuHomePage,
+            this.menuSkill,
+            this.menuCommand,
+            this.helpSeparator,
+            this.menuAbout});
+            this.menuHelp.Name = "menuHelp";
+            this.menuHelp.Size = new System.Drawing.Size(61, 21);
+            this.menuHelp.Text = "帮助(&H)";
+            // 
+            // menuRecommend
+            // 
+            this.menuRecommend.Name = "menuRecommend";
+            this.menuRecommend.Size = new System.Drawing.Size(152, 22);
+            this.menuRecommend.Text = "推荐给粉丝(&R)";
+            this.menuRecommend.Click += new System.EventHandler(this.menuRecommend_Click);
+            // 
+            // menuHomePage
+            // 
+            this.menuHomePage.Name = "menuHomePage";
+            this.menuHomePage.Size = new System.Drawing.Size(152, 22);
+            this.menuHomePage.Text = "产品主页(&P)";
+            this.menuHomePage.Click += new System.EventHandler(this.menuHomePage_Click);
+            // 
+            // menuSkill
+            // 
+            this.menuSkill.Name = "menuSkill";
+            this.menuSkill.Size = new System.Drawing.Size(152, 22);
+            this.menuSkill.Text = "使用技巧(&K)";
+            this.menuSkill.Click += new System.EventHandler(this.menuSkill_Click);
+            // 
+            // menuCommand
+            // 
+            this.menuCommand.Name = "menuCommand";
+            this.menuCommand.Size = new System.Drawing.Size(152, 22);
+            this.menuCommand.Text = "命令列表(&C)";
+            this.menuCommand.Click += new System.EventHandler(this.menuCommand_Click);
+            // 
+            // helpSeparator
+            // 
+            this.helpSeparator.Name = "helpSeparator";
+            this.helpSeparator.Size = new System.Drawing.Size(149, 6);
+            // 
+            // menuAbout
+            // 
+            this.menuAbout.Name = "menuAbout";
+            this.menuAbout.Size = new System.Drawing.Size(152, 22);
+            this.menuAbout.Text = "关于(&A)";
+            this.menuAbout.Click += new System.EventHandler(this.menuAbout_Click);
             // 
             // groupAccount
             // 
@@ -197,6 +260,13 @@
             this.chkAutoStart.UseVisualStyleBackColor = true;
             this.chkAutoStart.CheckedChanged += new System.EventHandler(this.chkAutoStart_CheckedChanged);
             // 
+            // menuSupport
+            // 
+            this.menuSupport.Name = "menuSupport";
+            this.menuSupport.Size = new System.Drawing.Size(152, 22);
+            this.menuSupport.Text = "捐助(&J)";
+            this.menuSupport.Click += new System.EventHandler(this.menuSupport_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -206,6 +276,7 @@
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.groupAccount);
             this.Controls.Add(this.btnSave);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MainMenuStrip = this.MainMenu;
             this.MaximizeBox = false;
             this.Name = "Main";
@@ -236,11 +307,19 @@
         internal System.Windows.Forms.NotifyIcon NotifyIcon;
         private System.Windows.Forms.ToolStripMenuItem settingMenu;
         private System.Windows.Forms.ToolStripMenuItem customCommandMenu;
-        private System.Windows.Forms.ToolStripSeparator 退出ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator settingSeparator;
         private System.Windows.Forms.ToolStripMenuItem exitMenu;
         private System.Windows.Forms.ToolStripMenuItem settingToolStrip;
         private System.Windows.Forms.ToolStripMenuItem exitTooStrip;
         private System.Windows.Forms.CheckBox chkAutoStart;
+        private System.Windows.Forms.ToolStripMenuItem menuHelp;
+        private System.Windows.Forms.ToolStripMenuItem menuAbout;
+        private System.Windows.Forms.ToolStripMenuItem menuCommand;
+        private System.Windows.Forms.ToolStripSeparator helpSeparator;
+        private System.Windows.Forms.ToolStripMenuItem menuSkill;
+        private System.Windows.Forms.ToolStripMenuItem menuHomePage;
+        private System.Windows.Forms.ToolStripMenuItem menuRecommend;
+        private System.Windows.Forms.ToolStripMenuItem menuSupport;
     }
 }
 

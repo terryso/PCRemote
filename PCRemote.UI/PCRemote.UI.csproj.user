@@ -3,10 +3,10 @@
   <PropertyGroup>
     <PublishUrlHistory>c:\WorkShop\Code\Weibo\PCRemote\Publish\|D:\WorkShop\Code\Weibo\PCRemote\Publish\|D:\Code\Weibo\PCRemote\Publish\|publish\</PublishUrlHistory>
     <InstallUrlHistory>http://pcremote.sinaapp.com/</InstallUrlHistory>
-    <SupportUrlHistory />
+    <SupportUrlHistory>http://suchuanyi.sinaapp.com</SupportUrlHistory>
     <UpdateUrlHistory>http://pcremote.sinaapp.com/</UpdateUrlHistory>
     <BootstrapperUrlHistory />
-    <ErrorReportUrlHistory />
+    <ErrorReportUrlHistory>http://t.sina.com.cn/suchuanyi</ErrorReportUrlHistory>
     <FallbackCulture>en-US</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>

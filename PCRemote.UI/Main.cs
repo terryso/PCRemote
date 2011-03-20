@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -109,6 +111,8 @@ namespace PCRemote.UI
             NotifyIcon.Text = "正在处理命令...";
             DebugPrintHelper("当前状态：处理命令中...");
 
+
+
             ICommand commandHandler;
             switch (command)
             {
@@ -148,6 +152,26 @@ namespace PCRemote.UI
                     SendComment(weiboId, "#PC遥控器#正在上传你的屏幕截图，一会将会出现在你的最新微博中。");
                     commandHandler = new ScreenshotCommand(_client);
                     break;
+                case "播放":
+                    SendComment(weiboId, "#PC遥控器#正在为您播放当前的多媒体文件。");
+                    commandHandler = new MediaCommand(MediaKey.PlayPause);
+                    break;
+                case "暂停":
+                    SendComment(weiboId, "#PC遥控器#已经帮您暂停播放当前的多媒体文件。");
+                    commandHandler = new MediaCommand(MediaKey.PlayPause);
+                    break;
+                case "下一首":
+                    SendComment(weiboId, "#PC遥控器#正在为您播放下一个多媒体文件。");
+                    commandHandler = new MediaCommand(MediaKey.Next);
+                    break;
+                case "上一首":
+                    SendComment(weiboId, "#PC遥控器#正在为您播放上一个多媒体文件。");
+                    commandHandler = new MediaCommand(MediaKey.Previous);
+                    break;
+                case "拍照":
+                    SendComment(weiboId, "#PC遥控器#正在上传你的WebCam抓拍，一会将会出现在你的最新微博中。");
+                    commandHandler = new PhotoCommand(_client, this);
+                    break;
                 default:
                     commandHandler = null;
                     break;
@@ -173,9 +197,6 @@ namespace PCRemote.UI
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            var command = new MediaCommand(MediaKey.PlayPause);
-            command.Execute();
-
             NotifyIcon.Text = "检查和保存设置中...";
             DebugPrintHelper("当前状态：检查和保存设置中...");
 
@@ -312,6 +333,36 @@ namespace PCRemote.UI
             tmrPCRemote.Enabled = true;
             NotifyIcon.Text = "PC遥控器已经激活，正在等待新的命令...";
             DebugPrintHelper("当前状态：PC遥控器已经激活，正在等待新的命令...");
+        }
+
+        private void menuCommand_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://suchuanyi.sinaapp.com/?page_id=26");
+        }
+
+        private void menuSkill_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://suchuanyi.sinaapp.com/?p=9");
+        }
+
+        private void menuHomePage_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://suchuanyi.sinaapp.com");
+        }
+
+        private void menuRecommend_Click(object sender, EventArgs e)
+        {
+            new Recommend().Show();
+        }
+
+        private void menuAbout_Click(object sender, EventArgs e)
+        {
+            new About().Show();
+        }
+
+        private void menuSupport_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://suchuanyi.sinaapp.com/?page_id=38");
         }
     }
 }

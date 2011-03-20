@@ -27,10 +27,14 @@
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>http://pcremote.sinaapp.com/</InstallUrl>
     <UpdateUrl>http://pcremote.sinaapp.com/</UpdateUrl>
+    <SupportUrl>http://suchuanyi.sinaapp.com</SupportUrl>
+    <ErrorReportUrl>http://t.sina.com.cn/suchuanyi</ErrorReportUrl>
+    <ProductName>PC遥控器</ProductName>
+    <PublisherName>PC遥控器</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>5</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -95,6 +99,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +123,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="Recommend.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Recommend.Designer.cs">
+      <DependentUpon>Recommend.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,6 +139,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Recommend.resx">
+      <DependentUpon>Recommend.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="PCRemote.pfx" />
