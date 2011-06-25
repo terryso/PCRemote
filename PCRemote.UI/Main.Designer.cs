@@ -30,10 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.tmrPCRemote = new System.Windows.Forms.Timer(this.components);
             this.RightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -43,9 +39,11 @@
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.settingMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.customCommandMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuLogoff = new System.Windows.Forms.ToolStripMenuItem();
             this.settingSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.exitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuSupport = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRecommend = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHomePage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSkill = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,51 +51,20 @@
             this.helpSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.groupAccount = new System.Windows.Forms.GroupBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.chkAutoStart = new System.Windows.Forms.CheckBox();
-            this.menuSupport = new System.Windows.Forms.ToolStripMenuItem();
             this.RightMenu.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.groupAccount.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 31);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "用户名：";
-            // 
-            // txtUsername
-            // 
-            this.txtUsername.Location = new System.Drawing.Point(73, 28);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(155, 21);
-            this.txtUsername.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 59);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 12);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "密  码：";
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Location = new System.Drawing.Point(73, 56);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(155, 21);
-            this.txtPassword.TabIndex = 1;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(61, 191);
+            this.btnSave.Location = new System.Drawing.Point(21, 197);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(174, 61);
+            this.btnSave.Size = new System.Drawing.Size(258, 61);
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "保  存";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -156,6 +123,7 @@
             // 
             this.settingMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.customCommandMenu,
+            this.menuLogoff,
             this.settingSeparator,
             this.exitMenu});
             this.settingMenu.Name = "settingMenu";
@@ -168,6 +136,13 @@
             this.customCommandMenu.Size = new System.Drawing.Size(136, 22);
             this.customCommandMenu.Text = "自定义命令";
             this.customCommandMenu.Click += new System.EventHandler(this.customCommandMenu_Click);
+            // 
+            // menuLogoff
+            // 
+            this.menuLogoff.Name = "menuLogoff";
+            this.menuLogoff.Size = new System.Drawing.Size(136, 22);
+            this.menuLogoff.Text = "注销(&L)";
+            this.menuLogoff.Click += new System.EventHandler(this.menuLogoff_Click);
             // 
             // settingSeparator
             // 
@@ -194,6 +169,13 @@
             this.menuHelp.Name = "menuHelp";
             this.menuHelp.Size = new System.Drawing.Size(61, 21);
             this.menuHelp.Text = "帮助(&H)";
+            // 
+            // menuSupport
+            // 
+            this.menuSupport.Name = "menuSupport";
+            this.menuSupport.Size = new System.Drawing.Size(152, 22);
+            this.menuSupport.Text = "捐助(&J)";
+            this.menuSupport.Click += new System.EventHandler(this.menuSupport_Click);
             // 
             // menuRecommend
             // 
@@ -237,22 +219,42 @@
             // 
             // groupAccount
             // 
+            this.groupAccount.Controls.Add(this.linkLabel1);
+            this.groupAccount.Controls.Add(this.pictureBox2);
             this.groupAccount.Controls.Add(this.chkAutoStart);
-            this.groupAccount.Controls.Add(this.label1);
-            this.groupAccount.Controls.Add(this.label2);
-            this.groupAccount.Controls.Add(this.txtUsername);
-            this.groupAccount.Controls.Add(this.txtPassword);
             this.groupAccount.Location = new System.Drawing.Point(21, 42);
             this.groupAccount.Name = "groupAccount";
-            this.groupAccount.Size = new System.Drawing.Size(258, 130);
+            this.groupAccount.Size = new System.Drawing.Size(258, 139);
             this.groupAccount.TabIndex = 5;
             this.groupAccount.TabStop = false;
             this.groupAccount.Text = "新浪微博账号设置";
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(136, 28);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(77, 12);
+            this.linkLabel1.TabIndex = 5;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "注册微博账号";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(41, 58);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(173, 32);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox2.TabIndex = 4;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            // 
             // chkAutoStart
             // 
             this.chkAutoStart.AutoSize = true;
-            this.chkAutoStart.Location = new System.Drawing.Point(73, 97);
+            this.chkAutoStart.Location = new System.Drawing.Point(82, 105);
             this.chkAutoStart.Name = "chkAutoStart";
             this.chkAutoStart.Size = new System.Drawing.Size(96, 16);
             this.chkAutoStart.TabIndex = 2;
@@ -260,23 +262,17 @@
             this.chkAutoStart.UseVisualStyleBackColor = true;
             this.chkAutoStart.CheckedChanged += new System.EventHandler(this.chkAutoStart_CheckedChanged);
             // 
-            // menuSupport
-            // 
-            this.menuSupport.Name = "menuSupport";
-            this.menuSupport.Size = new System.Drawing.Size(152, 22);
-            this.menuSupport.Text = "捐助(&J)";
-            this.menuSupport.Click += new System.EventHandler(this.menuSupport_Click);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(299, 264);
+            this.ClientSize = new System.Drawing.Size(299, 275);
             this.ContextMenuStrip = this.RightMenu;
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.groupAccount);
             this.Controls.Add(this.btnSave);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MainMenu;
             this.MaximizeBox = false;
             this.Name = "Main";
@@ -288,6 +284,7 @@
             this.MainMenu.PerformLayout();
             this.groupAccount.ResumeLayout(false);
             this.groupAccount.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -295,10 +292,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtUsername;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Timer tmrPCRemote;
         private System.Windows.Forms.ContextMenuStrip RightMenu;
@@ -320,6 +313,9 @@
         private System.Windows.Forms.ToolStripMenuItem menuHomePage;
         private System.Windows.Forms.ToolStripMenuItem menuRecommend;
         private System.Windows.Forms.ToolStripMenuItem menuSupport;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.ToolStripMenuItem menuLogoff;
     }
 }
 

@@ -20,7 +20,10 @@ namespace PCRemote.Core
 
         public void Execute()
         {
-            SendMessageW(_control.Handle, WM_APPCOMMAND, _control.Handle, new IntPtr(APPCOMMAND_VOLUME_DOWN));
+            for (int i = 0; i < 10; i++)
+            {
+                SendMessageW(_control.Handle, WM_APPCOMMAND, _control.Handle, new IntPtr(APPCOMMAND_VOLUME_DOWN));
+            }
         }
 
         #endregion

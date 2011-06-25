@@ -1,24 +1,37 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
 using Microsoft.Win32;
 using PCRemote.Core;
-using PCRemote.Core.Utilities;
+using PCRemote.DataAccess.Repositories;
 using PCRemote.UI.Properties;
-using Weibo;
-using Weibo.Contracts;
-using Weibo.Entities;
+using SocialKit.LightRest.OAuth;
+using WeiboSDK;
+using WeiboSDK.Contracts;
+using WeiboSDK.Entities;
 
 namespace PCRemote.UI
 {
     public partial class Main : Form
     {
         IWeiboClient _client;
+        ICommandRepository _repo;
         User _currentUser;
         public string WorkingFolder;
+        private RequestToken _requestToken;
+        private string _pinText;
+
+        Consumer consumer = new Consumer
+        {
+            Key = "59261381",
+            Secret = "b8ead84f1d63e6518b6cb51d9885cb7b",
+            RequestTokenUri = "http://api.t.sina.com.cn/oauth/request_token",
+            AuthorizeUri = "http://api.t.sina.com.cn/oauth/authorize",
+            AccessTokenUri = "http://api.t.sina.com.cn/oauth/access_token"
+        };
 
         public Main()
         {
@@ -28,7 +41,7 @@ namespace PCRemote.UI
         private void tmrPCRemote_Tick(object sender, EventArgs e)
         {
             tmrPCRemote.Enabled = false;
-            if (this.ShowInTaskbar)
+            if (ShowInTaskbar)
             {
                 return;
             }
@@ -36,10 +49,11 @@ namespace PCRemote.UI
             NotifyIcon.Text = "正在检查是否有新的微博...";
             DebugPrintHelper("当前状态：正在检查是否有新的微博...");
             
-            //todo: 检查用户账号是否合法
+            //检查用户账号是否合法
             try
             {
-                _client = new NormalWeiboClient(Settings.Default.Username, Settings.Default.Password, ResultFormat.json);
+                var accessToken = new AccessToken(consumer, Settings.Default.AccessToken, Settings.Default.AccessTokenSecret);
+                _client = new WeiboClient(accessToken, ResultFormat.json);
                 _currentUser = _client.VerifyCredentials();
             }
             catch (Exception ex)
@@ -48,7 +62,7 @@ namespace PCRemote.UI
                 tmrPCRemote.Enabled = true;
             }
             
-            //todo: 检查新微博
+            //检查新微博
             try
             {
                 var status = _client.GetUserWeibos(_currentUser.ScreenName)[0];
@@ -57,8 +71,8 @@ namespace PCRemote.UI
                     Settings.Default.LastID = status.Id.ToString().Trim();
                     Settings.Default.Save();
 
-                    //todo: 把最新的一条微博的命令部分拆出来
-                    string command = status.Text.Split(new string[] { "$$" }, StringSplitOptions.None)[0];
+                    //把最新的一条微博的命令部分拆出来
+                    var command = status.Text.Split(new string[] { "$$" }, StringSplitOptions.None)[0];
                     while (command.EndsWith(" "))
                     {
                         command = command.Remove(command.Length - 1, 1);
@@ -66,7 +80,7 @@ namespace PCRemote.UI
                     DebugPrintHelper("新发布的命令为: \"" + command + "\"");
                     tmrPCRemote.Interval = 7000;
 
-                    //todo: 解释命令
+                    //解释命令
                     ProcessCommand(command, status.Id);
                 }
                 else
@@ -102,7 +116,7 @@ namespace PCRemote.UI
             }
 
             tmrPCRemote.Enabled = true;
-            NotifyIcon.Text = "PC遥控器已经激活，正在等待新的命令...";
+            NotifyIcon.Text = @"PC遥控器已经激活，正在等待新的命令...";
             DebugPrintHelper("当前状态：PC遥控器已经激活，正在等待新的命令...");
         }
 
@@ -111,69 +125,93 @@ namespace PCRemote.UI
             NotifyIcon.Text = "正在处理命令...";
             DebugPrintHelper("当前状态：处理命令中...");
 
-
-
             ICommand commandHandler;
-            switch (command)
+            switch (command.ToLower())
             {
+                case "shutdown":
                 case "关机":
                     SendComment(weiboId, Resource.ShutdownCommand_Comment);
                     commandHandler = new ShutdownCommand();
                     break;;
+                case "abortshutdown":
                 case "终止关机":
                     SendComment(weiboId, Resource.AbortShutdownCommand_Comment);
                     commandHandler = new AbortShutdownCommand();
                     break;
+                case "restart":
                 case "重启":
                     SendComment(weiboId, Resource.RestartCommand_Comment);
                     commandHandler = new RestartCommand();
                     break;
+                case "logoff":
+                case "注销":
+                    SendComment(weiboId, "#PC遥控器#正在帮您注销您的计算机。");
+                    commandHandler = new LogoffCommand();
+                    break;
+                case "volmute":
                 case "静音":
                     SendComment(weiboId, Resource.VolMuteCommand_Comment);
                     commandHandler = new VolMuteCommand(this);
                     break;
+                case "cancelvolmute":
                 case "取消静音":
                     SendComment(weiboId, Resource.VolUnMuteCommand_Comment);
                     commandHandler = new VolMuteCommand(this);
                     break;
+                case "volinc":
                 case "加大音量":
                     SendComment(weiboId, Resource.VolIncCommand_Comment);
                     commandHandler = new VolIncCommand(this);
                     break;
+                case "voldec":
                 case "减小音量":
                     SendComment(weiboId, Resource.VolDecCommand_Comment);
                     commandHandler = new VolDecCommand(this);
                     break;
+                case "darkscreen":
                 case "关闭显示器":
                     SendComment(weiboId, "#PC遥控器#已经帮您关闭您的显示器。");
                     commandHandler = new DarkScreenCommand();
                     break;
+                case "screenshot":
+                case "截图":
                 case "屏幕截图":
                     SendComment(weiboId, "#PC遥控器#正在上传你的屏幕截图，一会将会出现在你的最新微博中。");
                     commandHandler = new ScreenshotCommand(_client);
                     break;
+                case "play":
                 case "播放":
                     SendComment(weiboId, "#PC遥控器#正在为您播放当前的多媒体文件。");
                     commandHandler = new MediaCommand(MediaKey.PlayPause);
                     break;
+                case "pause":
                 case "暂停":
                     SendComment(weiboId, "#PC遥控器#已经帮您暂停播放当前的多媒体文件。");
                     commandHandler = new MediaCommand(MediaKey.PlayPause);
                     break;
+                case "next":
                 case "下一首":
                     SendComment(weiboId, "#PC遥控器#正在为您播放下一个多媒体文件。");
                     commandHandler = new MediaCommand(MediaKey.Next);
                     break;
+                case "previous":
                 case "上一首":
                     SendComment(weiboId, "#PC遥控器#正在为您播放上一个多媒体文件。");
                     commandHandler = new MediaCommand(MediaKey.Previous);
                     break;
+                case "camera":
                 case "拍照":
                     SendComment(weiboId, "#PC遥控器#正在上传你的WebCam抓拍，一会将会出现在你的最新微博中。");
                     commandHandler = new PhotoCommand(_client, this);
                     break;
+                case "lock":
+                case "锁屏":
+                    SendComment(weiboId, "#PC遥控器#已经帮您锁住您的计算机的屏幕。");
+                    commandHandler = new LockCommand();
+                    break;
                 default:
                     commandHandler = null;
+                    RunCustomCommands(weiboId, command);
                     break;
             }
 
@@ -181,12 +219,48 @@ namespace PCRemote.UI
                 commandHandler.Execute();
         }
 
-        private void SendComment(long weiboId, string message)
+        private void RunCustomCommands(long weiboId, string command)
         {
-            NotifyIcon.Text = "正在发送微博...";
+            var splitCommand = command.Split(' ')[0];
+
+            NotifyIcon.Text = "检查自定义命令...";
+            DebugPrintHelper("当前状态：检查自定义命令...");
+
             try
             {
-                _client = new NormalWeiboClient(Settings.Default.Username, Settings.Default.Password, ResultFormat.json);
+
+                _repo = new CommandRepository(Global.ConnectionString);
+                var cmd = _repo.FindOne(splitCommand.ToLower());
+
+                if(cmd != null && !string.IsNullOrEmpty(cmd.File))
+                {
+                    SendComment(weiboId, string.Format("#PC遥控器#正在为您执行您的自定义命令: {0}。", command));
+
+                    var optionsCommand = command.Remove(0, splitCommand.Length);
+                    while (optionsCommand.StartsWith(" ") == true)
+                    {
+                        optionsCommand = optionsCommand.Remove(0, 1);
+                    }
+                    DebugPrintHelper(string.Format("当前执行的自定义命令为: \"{0} {1}\"", cmd.File, optionsCommand));
+                    Process.Start(cmd.File, optionsCommand);
+
+                    SendComment(weiboId, "#PC遥控器#执行自定义命令完成。");
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugPrintHelper(ex.Message);
+                SendComment(weiboId, "执行自定义命令出错。请过一会重试。");
+            }
+        }
+
+        private void SendComment(long weiboId, string message)
+        {
+            NotifyIcon.Text = @"正在发送微博...";
+            try
+            {
+                var accessToken = new AccessToken(consumer, Settings.Default.AccessToken, Settings.Default.AccessTokenSecret);
+                _client = new WeiboClient(accessToken, ResultFormat.json);
                 _client.Comment(weiboId.ToString(), string.Empty, message + "有问题请@四眼蒙面侠 " + DateTime.Now.Ticks);
             }
             catch (Exception ex)
@@ -197,49 +271,64 @@ namespace PCRemote.UI
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            NotifyIcon.Text = "检查和保存设置中...";
+            NotifyIcon.Text = @"检查和保存设置中...";
             DebugPrintHelper("当前状态：检查和保存设置中...");
 
-            //todo: 检查用户输入
-            if (string.IsNullOrEmpty(txtUsername.Text))
+            if(!string.IsNullOrEmpty(_pinText))
             {
-                MessageBox.Show("请输入用户名");
-                txtUsername.Focus();
-                return;
+                AccessToken accessToken;
+                try
+                {
+                    accessToken = _requestToken.ToAccessToken(_pinText);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    pictureBox2.Image = Resources.login;
+                    pictureBox2.Enabled = true;
+                    return;
+                }
+
+                //保存用户设置
+                Settings.Default.AccessToken = accessToken.Token;
+                Settings.Default.AccessTokenSecret = accessToken.Secret;
+
+                Settings.Default.Save();
             }
 
-            if(string.IsNullOrEmpty(txtPassword.Text))
+            if (string.IsNullOrEmpty(Settings.Default.AccessToken) || string.IsNullOrEmpty(Settings.Default.AccessTokenSecret))
             {
-                MessageBox.Show("请输入密码");
-                txtPassword.Focus();
+                pictureBox2.Image = Resources.login;
+                pictureBox2.Enabled = true;
+                MessageBox.Show("请先使用微博账号登录");
                 return;
             }
-
-            btnSave.Text = "请耐心等待...";
-            this.Refresh();
 
             try
             {
-                _client = new NormalWeiboClient(txtUsername.Text, txtPassword.Text, ResultFormat.json);
+                var accessToken = new AccessToken(consumer, Settings.Default.AccessToken, Settings.Default.AccessTokenSecret);
+                _client = new WeiboClient(accessToken, ResultFormat.json);
+
                 _client.VerifyCredentials();
+
+                pictureBox2.Image = Resources.login_grey;
+                pictureBox2.Enabled = false;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                pictureBox2.Image = Resources.login_grey;
+                pictureBox2.Enabled = true;
                 return;
             }
 
-            //todo: 保存用户设置
-            Settings.Default.Username = txtUsername.Text;
-            Settings.Default.Password = txtPassword.Text;
+            //最小化主窗口并在任务栏显示
+            _pinText = string.Empty;
 
-            Settings.Default.Save();
-
-            //todo: 最小化主窗口并在任务栏显示
-            this.WindowState = FormWindowState.Minimized;
-            this.ShowInTaskbar = false;
-            this.tmrPCRemote.Enabled = true;
-            this.btnSave.Text = "保 存";
+            WindowState = FormWindowState.Minimized;
+            ShowInTaskbar = false;
+            tmrPCRemote.Enabled = true;
+            btnSave.Text = "保 存";
             NotifyIcon.Text = "PC遥控器已经激活，正在等待新的命令...";
             DebugPrintHelper("当前状态：PC遥控器已经激活，正在等待新的命令...");
         }
@@ -281,13 +370,15 @@ namespace PCRemote.UI
 
         private void customCommandMenu_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("此功能正在开发中...");
+            DebugPrintHelper("打开自定义命令窗口");
+            CustomCommands.Default.ShowDialog();
+            CustomCommands.Default.Focus();
         }
 
         private void settingToolStrip_Click(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Normal;
-            this.ShowInTaskbar = true;
+            WindowState = FormWindowState.Normal;
+            ShowInTaskbar = true;
         }
 
         private void chkAutoStart_CheckedChanged(object sender, EventArgs e)
@@ -314,14 +405,34 @@ namespace PCRemote.UI
 
         private void Main_Load(object sender, EventArgs e)
         {
-            if(string.IsNullOrEmpty(Settings.Default.Username) || string.IsNullOrEmpty(Settings.Default.Password))
+            if(string.IsNullOrEmpty(Settings.Default.AccessToken) || string.IsNullOrEmpty(Settings.Default.AccessTokenSecret))
+            {
+                pictureBox2.Image = Resources.login;
+                pictureBox2.Enabled = true;
                 return;
+            }
 
-            this.WindowState = FormWindowState.Minimized;
-            this.ShowInTaskbar = false;
+            try
+            {
+                var accessToken = new AccessToken(consumer, Settings.Default.AccessToken, Settings.Default.AccessTokenSecret);
+                _client = new WeiboClient(accessToken, ResultFormat.json);
 
-            txtUsername.Text = Settings.Default.Username;
-            txtPassword.Text = Settings.Default.Password;
+                _client.VerifyCredentials();
+
+                pictureBox2.Image = Resources.login_grey;
+                pictureBox2.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                pictureBox2.Image = Resources.login;
+                pictureBox2.Enabled = true;
+                return;
+            }
+
+            WindowState = FormWindowState.Minimized;
+            ShowInTaskbar = false;
+
             chkAutoStart.Checked = Settings.Default.AutomaticStart;
 
             DebugPrintHelper("---");
@@ -331,7 +442,7 @@ namespace PCRemote.UI
             DebugPrintHelper("Workingfolder: " + WorkingFolder);
 
             tmrPCRemote.Enabled = true;
-            NotifyIcon.Text = "PC遥控器已经激活，正在等待新的命令...";
+            NotifyIcon.Text = @"PC遥控器已经激活，正在等待新的命令...";
             DebugPrintHelper("当前状态：PC遥控器已经激活，正在等待新的命令...");
         }
 
@@ -363,6 +474,34 @@ namespace PCRemote.UI
         private void menuSupport_Click(object sender, EventArgs e)
         {
             Process.Start("http://suchuanyi.sinaapp.com/?page_id=38");
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            _requestToken = consumer.GetRequestToken();
+            var authorizeUri = _requestToken.GetNormalizedAuthorizeUri();
+
+            Process.Start(authorizeUri);
+
+            Thread.Sleep(3500);
+            _pinText = Interaction.InputBox("请输入授权码:", "新浪微博授权码", "", -1, -1);
+
+        }
+
+        private void menuLogoff_Click(object sender, EventArgs e)
+        {
+            Settings.Default.AccessToken = string.Empty;
+            Settings.Default.AccessTokenSecret = string.Empty;
+
+            Settings.Default.Save();
+
+            pictureBox2.Image = Resources.login;
+            pictureBox2.Enabled = true; 
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://t.sina.com.cn/?c=spr_web_yihua_suchuanyi_weibo_t002");
         }
     }
 }

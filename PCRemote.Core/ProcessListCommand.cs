@@ -1,5 +1,5 @@
 using System;
-using Weibo.Contracts;
+using WeiboSDK.Contracts;
 
 namespace PCRemote.Core
 {

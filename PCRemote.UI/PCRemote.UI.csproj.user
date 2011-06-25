@@ -9,5 +9,6 @@
     <ErrorReportUrlHistory>http://t.sina.com.cn/suchuanyi</ErrorReportUrlHistory>
     <FallbackCulture>en-US</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
+    <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
 </Project>

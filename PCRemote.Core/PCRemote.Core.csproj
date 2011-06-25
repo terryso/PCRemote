@@ -47,6 +47,8 @@
     <Compile Include="AbortShutdownCommand.cs" />
     <Compile Include="DarkScreenCommand.cs" />
     <Compile Include="ICommand.cs" />
+    <Compile Include="LockCommand.cs" />
+    <Compile Include="LogoffCommand.cs" />
     <Compile Include="MediaCommand.cs" />
     <Compile Include="PhotoCommand.cs" />
     <Compile Include="ProcessListCommand.cs" />
@@ -67,9 +69,9 @@
     <Compile Include="VolMuteCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Weibo\Weibo.csproj">
+    <ProjectReference Include="..\..\WeiboSDK\WeiboSDK\WeiboSDK.csproj">
       <Project>{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}</Project>
-      <Name>Weibo</Name>
+      <Name>WeiboSDK</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

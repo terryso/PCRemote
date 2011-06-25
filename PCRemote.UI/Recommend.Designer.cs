@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Recommend));
             this.txtContent = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -59,6 +60,7 @@
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.txtContent);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Recommend";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

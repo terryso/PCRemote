@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 using PCRemote.Core.Utilities;
-using Weibo.Contracts;
+using WeiboSDK.Contracts;
 
 namespace PCRemote.Core
 {

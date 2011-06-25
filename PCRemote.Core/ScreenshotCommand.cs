@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using PCRemote.Core.Utilities;
-using Weibo.Contracts;
+using WeiboSDK.Contracts;
 
 namespace PCRemote.Core
 {
@@ -20,7 +20,6 @@ namespace PCRemote.Core
 
         public void Execute()
         {
-	    //todo:加入一些注释
             var temp = Environment.GetEnvironmentVariable("TEMP");
             var picPath = temp + "\\" + Guid.NewGuid() + ".jpg";
             ImageUtility.CaptureDesktop(picPath);
