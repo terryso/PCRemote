@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRemote.Tests", "PCRemote.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRemote.DataAccess", "PCRemote.DataAccess\PCRemote.DataAccess.csproj", "{ABC3BCD7-422D-410F-8C29-DD36AC2F6CE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeiboSDK", "..\WeiboSDK\WeiboSDK\WeiboSDK.csproj", "{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeiboSDK", "WeiboSDK\WeiboSDK\WeiboSDK.csproj", "{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

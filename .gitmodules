@@ -1,0 +1,3 @@
+[submodule "WeiboSDK"]
+	path = WeiboSDK
+	url = git@github.com:terryso/WeiboSDK.git

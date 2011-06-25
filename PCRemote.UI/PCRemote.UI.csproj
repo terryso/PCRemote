@@ -217,10 +217,6 @@
     <Content Include="Resources\Twitter.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\WeiboSDK\WeiboSDK\WeiboSDK.csproj">
-      <Project>{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}</Project>
-      <Name>WeiboSDK</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PCRemote.Core\PCRemote.Core.csproj">
       <Project>{16C31473-3884-41B5-818B-2E2230D4DD42}</Project>
       <Name>PCRemote.Core</Name>
@@ -228,6 +224,10 @@
     <ProjectReference Include="..\PCRemote.DataAccess\PCRemote.DataAccess.csproj">
       <Project>{ABC3BCD7-422D-410F-8C29-DD36AC2F6CE2}</Project>
       <Name>PCRemote.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WeiboSDK\WeiboSDK\WeiboSDK.csproj">
+      <Project>{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}</Project>
+      <Name>WeiboSDK</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -69,7 +69,7 @@
     <Compile Include="VolMuteCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\WeiboSDK\WeiboSDK\WeiboSDK.csproj">
+    <ProjectReference Include="..\WeiboSDK\WeiboSDK\WeiboSDK.csproj">
       <Project>{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}</Project>
       <Name>WeiboSDK</Name>
     </ProjectReference>
