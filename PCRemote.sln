@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCRemote.DataAccess", "PCRe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeiboSDK", "WeiboSDK\WeiboSDK\WeiboSDK.csproj", "{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeiboSDK.UnitTests", "WeiboSDK\WeiboSDK.UnitTests\WeiboSDK.UnitTests.csproj", "{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,7 @@ Global
 		{ABC3BCD7-422D-410F-8C29-DD36AC2F6CE2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{ABC3BCD7-422D-410F-8C29-DD36AC2F6CE2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{ABC3BCD7-422D-410F-8C29-DD36AC2F6CE2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ABC3BCD7-422D-410F-8C29-DD36AC2F6CE2}.Debug|x64.Build.0 = Debug|Any CPU
 		{ABC3BCD7-422D-410F-8C29-DD36AC2F6CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABC3BCD7-422D-410F-8C29-DD36AC2F6CE2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ABC3BCD7-422D-410F-8C29-DD36AC2F6CE2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -72,12 +75,24 @@ Global
 		{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}.Debug|x64.Build.0 = Debug|Any CPU
 		{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}.Release|Any CPU.Build.0 = Release|Any CPU
 		{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}.Release|x64.ActiveCfg = Release|Any CPU
 		{576ECAD6-DC4E-485B-B5AE-C1B23CDD4C59}.Release|x64.Build.0 = Release|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Debug|x64.Build.0 = Debug|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

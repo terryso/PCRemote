@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using PCRemote.Core;
 using PCRemote.DataAccess;
 using PCRemote.DataAccess.Repositories;
 
@@ -49,10 +50,10 @@ namespace PCRemote.UI
 		#endregion
 		private void btnFile_Click(Object sender, EventArgs e)
 		{
-			OpenFileDialog openDialog = new OpenFileDialog();
+			var openDialog = new OpenFileDialog();
 			txtFileName.Text = "";
-			openDialog.Filter = "可执行文件或音乐|*.COM;*.EXE;*.BAT;*.CMD;*.VBS;*.BAT;*.AHK;*.PY;*.wpl;*.m3u;*.mp3;*.wma;*.wav;*.xspf;*.html;*.txt|所有文件|*.*";
-			openDialog.Title = "选择你想要执行的文件:";
+			openDialog.Filter = @"可执行文件或音乐|*.COM;*.EXE;*.BAT;*.CMD;*.VBS;*.BAT;*.AHK;*.PY;*.wpl;*.m3u;*.mp3;*.wma;*.wav;*.xspf;*.html;*.txt|所有文件|*.*";
+			openDialog.Title = @"选择你想要执行的文件:";
 			openDialog.ShowDialog();
 			if (openDialog.FileName != "")
 			{
@@ -60,7 +61,7 @@ namespace PCRemote.UI
 			}
 			else
 			{
-				txtFileName.Text = "文件路径...";
+				txtFileName.Text = @"文件路径...";
 			}
 			openDialog.Dispose();
 		}
@@ -69,7 +70,7 @@ namespace PCRemote.UI
 		{		
 			if (txtCommand.Text.Trim() == "" || txtFileName.Text.Trim() == "")
 			{
-				MessageBox.Show("请输入命令和文件路径。");
+				MessageBox.Show(@"请输入命令和文件路径。");
 				txtCommand.Focus();
 			}
 			else
@@ -85,7 +86,7 @@ namespace PCRemote.UI
 				{
 					if (txtCommand.Text.Trim().ToLower() == preDefinedCommand[i])
 					{
-						MessageBox.Show("你输入的命令与系统预定义的命令有冲突，请换一个命令。");
+						MessageBox.Show(@"你输入的命令与系统预定义的命令有冲突，请换一个命令。");
 						txtCommand.Focus();
 						return;
 					}
@@ -95,7 +96,7 @@ namespace PCRemote.UI
 				
 				if (splitCommand.Length > 1)
 				{
-					MessageBox.Show("你输入的命令格式有误");
+					MessageBox.Show(@"你输入的命令格式有误");
 					txtCommand.Focus();
 					return;
 				}

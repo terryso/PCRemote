@@ -119,7 +119,7 @@
     <Compile Include="CustomCommands.designer.cs">
       <DependentUpon>CustomCommands.cs</DependentUpon>
     </Compile>
-    <Compile Include="Global.cs" />
+    <Compile Include="Factories\WeiboServiceFactory.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,6 +196,8 @@
     <Content Include="Resources\48.png" />
     <Content Include="Resources\48_grey.png" />
     <Content Include="Resources\Bird.png" />
+    <Content Include="Resources\tqq_16.png" />
+    <Content Include="Resources\tsina_16.png" />
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

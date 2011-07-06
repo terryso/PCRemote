@@ -51,13 +51,15 @@
             this.helpSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.groupAccount = new System.Windows.Forms.GroupBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.chkAutoStart = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ddlWeibo = new System.Windows.Forms.ComboBox();
+            this.txtPin = new System.Windows.Forms.TextBox();
+            this.btnGetPin = new System.Windows.Forms.Button();
             this.RightMenu.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.groupAccount.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSave
@@ -219,37 +221,18 @@
             // 
             // groupAccount
             // 
-            this.groupAccount.Controls.Add(this.linkLabel1);
-            this.groupAccount.Controls.Add(this.pictureBox2);
+            this.groupAccount.Controls.Add(this.btnGetPin);
+            this.groupAccount.Controls.Add(this.txtPin);
+            this.groupAccount.Controls.Add(this.ddlWeibo);
+            this.groupAccount.Controls.Add(this.label2);
+            this.groupAccount.Controls.Add(this.label1);
             this.groupAccount.Controls.Add(this.chkAutoStart);
             this.groupAccount.Location = new System.Drawing.Point(21, 42);
             this.groupAccount.Name = "groupAccount";
             this.groupAccount.Size = new System.Drawing.Size(258, 139);
             this.groupAccount.TabIndex = 5;
             this.groupAccount.TabStop = false;
-            this.groupAccount.Text = "新浪微博账号设置";
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(136, 28);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(77, 12);
-            this.linkLabel1.TabIndex = 5;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "注册微博账号";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(41, 58);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(173, 32);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox2.TabIndex = 4;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.groupAccount.Text = "微博账号设置";
             // 
             // chkAutoStart
             // 
@@ -261,6 +244,53 @@
             this.chkAutoStart.Text = "开机自动登录";
             this.chkAutoStart.UseVisualStyleBackColor = true;
             this.chkAutoStart.CheckedChanged += new System.EventHandler(this.chkAutoStart_CheckedChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(17, 36);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "微  博：";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(17, 68);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 12);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "授权码：";
+            // 
+            // ddlWeibo
+            // 
+            this.ddlWeibo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlWeibo.FormattingEnabled = true;
+            this.ddlWeibo.Items.AddRange(new object[] {
+            "新浪微博",
+            "腾讯微博"});
+            this.ddlWeibo.Location = new System.Drawing.Point(68, 33);
+            this.ddlWeibo.Name = "ddlWeibo";
+            this.ddlWeibo.Size = new System.Drawing.Size(100, 20);
+            this.ddlWeibo.TabIndex = 5;
+            // 
+            // txtPin
+            // 
+            this.txtPin.Location = new System.Drawing.Point(68, 63);
+            this.txtPin.Name = "txtPin";
+            this.txtPin.Size = new System.Drawing.Size(100, 21);
+            this.txtPin.TabIndex = 6;
+            // 
+            // btnGetPin
+            // 
+            this.btnGetPin.Location = new System.Drawing.Point(174, 63);
+            this.btnGetPin.Name = "btnGetPin";
+            this.btnGetPin.Size = new System.Drawing.Size(75, 23);
+            this.btnGetPin.TabIndex = 7;
+            this.btnGetPin.Text = "获取授权码";
+            this.btnGetPin.UseVisualStyleBackColor = true;
+            this.btnGetPin.Click += new System.EventHandler(this.btnGetPin_Click);
             // 
             // Main
             // 
@@ -284,7 +314,6 @@
             this.MainMenu.PerformLayout();
             this.groupAccount.ResumeLayout(false);
             this.groupAccount.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -313,9 +342,12 @@
         private System.Windows.Forms.ToolStripMenuItem menuHomePage;
         private System.Windows.Forms.ToolStripMenuItem menuRecommend;
         private System.Windows.Forms.ToolStripMenuItem menuSupport;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.ToolStripMenuItem menuLogoff;
+        private System.Windows.Forms.Button btnGetPin;
+        private System.Windows.Forms.TextBox txtPin;
+        private System.Windows.Forms.ComboBox ddlWeibo;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
 
