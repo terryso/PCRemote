@@ -6,7 +6,6 @@ using Microsoft.Win32;
 using PCRemote.Core;
 using PCRemote.Core.Commands;
 using PCRemote.Core.Contracts;
-using PCRemote.Core.Entities;
 using PCRemote.DataAccess.Repositories;
 using PCRemote.UI.Factories;
 using PCRemote.UI.Properties;
@@ -19,7 +18,6 @@ namespace PCRemote.UI
     {
         IWeiboService _service;
         ICommandRepository _repo;
-        WeiboUser _currentUser;
         public string WorkingFolder;
         private RequestToken _requestToken;
 
@@ -44,7 +42,7 @@ namespace PCRemote.UI
             try
             {
                 _service = WeiboServiceFactory.CreateInstance();
-                _currentUser = _service.VerifyCredentials();
+                _service.VerifyCredentials();
             }
             catch (Exception ex)
             {
@@ -250,7 +248,17 @@ namespace PCRemote.UI
             try
             {
                 _service = WeiboServiceFactory.CreateInstance();
-                _service.SendComment(weiboId, message + "有问题请@四眼蒙面侠 " + DateTime.Now.Ticks);
+
+                var weiboType = Settings.Default.WeiboType.ToLower();
+                switch (weiboType)
+                {
+                    case "新浪微博":
+                        _service.SendComment(weiboId, message + "有问题请@四眼蒙面侠 " + DateTime.Now.Ticks);
+                        break;
+                    case "腾讯微博":
+                        _service.SendComment(weiboId, message + "有问题请@suchuanyi " + DateTime.Now.Ticks);
+                        break;
+                }
             }
             catch (Exception ex)
             {
@@ -388,6 +396,9 @@ namespace PCRemote.UI
                 UnlockAccountSetup();
                 return;
             }
+
+            if (!string.IsNullOrEmpty(Settings.Default.WeiboType))
+                ddlWeibo.Text = Settings.Default.WeiboType;
 
             try
             {

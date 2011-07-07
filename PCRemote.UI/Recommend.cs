@@ -26,7 +26,7 @@ namespace PCRemote.UI
 
                 var content = txtContent.Text;
                 if (string.IsNullOrEmpty(content))
-                    content = "推荐应用【PC遥控器】http://t.sina.com.cn/app/detail/5CRj7";
+                    content = "推荐应用#PC遥控器# 可以用手机发微博遥控电脑开关机，音量，截图，很有趣的软件，真的很给力！http://suchuanyi.sinaapp.com";
 
                 service.SendWeibo(content);
                 Close();

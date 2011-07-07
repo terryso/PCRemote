@@ -93,6 +93,7 @@ Global
 		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Release|x64.ActiveCfg = Release|Any CPU
+		{7CD1BBED-4E8F-4C94-B3AC-0E6D130D7469}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
