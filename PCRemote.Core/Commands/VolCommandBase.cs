@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace PCRemote.Core.Commands
 {
-    public class VolCommandBase
+    public class VolCommandBase : CommandBase
     {
         protected const int APPCOMMAND_VOLUME_MUTE = 0x80000;
         protected const int APPCOMMAND_VOLUME_UP = 0xA0000;

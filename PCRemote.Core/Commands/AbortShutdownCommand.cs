@@ -2,17 +2,19 @@
 
 using System.Diagnostics;
 using PCRemote.Core.Contracts;
+using PCRemote.Core.Entities;
 
 #endregion
 
 namespace PCRemote.Core.Commands
 {
-    public class AbortShutdownCommand : ICommand
+    public class AbortShutdownCommand : CommandBase, ICommand
     {
         #region Implementation of ICommand
 
-        public void Execute()
+        public void Execute(CommandContext context)
         {
+            SendComment(context, "#PC遥控器#已经停止关闭您的计算机。");
             Process.Start("shutdown", "-a");
         }
 

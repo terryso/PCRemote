@@ -89,6 +89,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Ninject">
+      <HintPath>..\lib\Ninject-2.2.0.0-release-net-3.5\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="SocialKit.LightRest, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\SocialKit.LightRest.dll</HintPath>

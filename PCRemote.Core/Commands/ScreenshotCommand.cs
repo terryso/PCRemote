@@ -2,6 +2,7 @@
 
 using System;
 using PCRemote.Core.Contracts;
+using PCRemote.Core.Entities;
 using PCRemote.Core.Utilities;
 using WeiboSDK.Contracts;
 
@@ -9,24 +10,19 @@ using WeiboSDK.Contracts;
 
 namespace PCRemote.Core.Commands
 {
-    public class ScreenshotCommand : ICommand
+    public class ScreenshotCommand : CommandBase, ICommand
     {
-        readonly IWeiboService _service;
-
-        public ScreenshotCommand(IWeiboService service)
-        {
-            _service = service;
-        }
-
         #region Implementation of ICommand
 
-        public void Execute()
+        public void Execute(CommandContext context)
         {
+            SendComment(context, "#PC遥控器#正在上传你的屏幕截图，一会将会出现在你的最新微博中。");
+
             var temp = Environment.GetEnvironmentVariable("TEMP");
-            var picPath = temp + "\\" + Guid.NewGuid() + ".jpg";
+            var picPath = string.Format("{0}\\{1}.jpg", temp, Guid.NewGuid());
             ImageUtility.CaptureDesktop(picPath);
 
-            _service.SendWeiboWithPicture("我正在使用#PC遥控器#分享我的屏幕截图 " + DateTime.Now.ToLongTimeString(), picPath);
+            context.WeiboService.SendWeiboWithPicture("我正在使用#PC遥控器#分享我的屏幕截图 " + DateTime.Now.ToLongTimeString(), picPath);
         }
 
         #endregion

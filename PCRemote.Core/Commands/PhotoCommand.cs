@@ -6,27 +6,30 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 using PCRemote.Core.Contracts;
+using PCRemote.Core.Entities;
 using PCRemote.Core.Utilities;
 
 #endregion
 
 namespace PCRemote.Core.Commands
 {
-    public class PhotoCommand : ICommand
+    public class PhotoCommand : CommandBase, ICommand
     {
-        readonly IWeiboService _client;
-        readonly Control _control;
+        public PhotoCommand()
+        {
+            
+        }
 
         public PhotoCommand(IWeiboService client, Control control)
         {
-            _client = client;
-            _control = control;
         }
 
         #region ICommand Members
 
-        public void Execute()
+        public void Execute(CommandContext context)
         {
+            SendComment(context, "#PC遥控器#正在上传你的WebCam抓拍，一会将会出现在你的最新微博中。");
+
             Bitmap bitmap = null;
             EncoderParameters encoderParams = null;
             EncoderParameter parameter = null;
@@ -35,9 +38,9 @@ namespace PCRemote.Core.Commands
                 var temp = Environment.GetEnvironmentVariable("TEMP");
                 var picPath = temp + "\\" + Guid.NewGuid() + ".bmp";
 
-                var webcam = new WebCamUtility(_control.Handle, 600, 480);
+                var webcam = new WebCamUtility(context.Handle, 600, 480);
                 webcam.StartWebCam();
-                webcam.GrabImage(_control.Handle, picPath);
+                webcam.GrabImage(context.Handle, picPath);
                 webcam.CloseWebcam();
 
                 bitmap = new Bitmap(picPath);
@@ -51,7 +54,7 @@ namespace PCRemote.Core.Commands
                 var newPicPath = picPath.Replace("bmp", "jpg");
                 bitmap.Save(newPicPath, codecInfo, encoderParams);
 
-                _client.SendWeiboWithPicture("我正在使用#PC遥控器#分享我的WebCam抓拍 " + DateTime.Now.ToLongTimeString(), newPicPath);
+                context.WeiboService.SendWeiboWithPicture("我正在使用#PC遥控器#分享我的WebCam抓拍 " + DateTime.Now.ToLongTimeString(), newPicPath);
             }
             finally
             {

@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using PCRemote.Core;
-using PCRemote.Core.Commands;
+using PCRemote.Core.Configuration;
 using PCRemote.Core.Contracts;
+using PCRemote.Core.Entities;
 using PCRemote.DataAccess.Repositories;
 using PCRemote.UI.Factories;
 using PCRemote.UI.Properties;
@@ -20,11 +22,15 @@ namespace PCRemote.UI
         ICommandRepository _repo;
         public string WorkingFolder;
         private RequestToken _requestToken;
+        IDictionary<string, ICommand> _commands;
 
         public Main()
         {
             InitializeComponent();
             ddlWeibo.SelectedIndex = 0;
+
+            _commands = CommandConfiguration.GetConfig().Commands;
+
         }
 
         private void tmrPCRemote_Tick(object sender, EventArgs e)
@@ -114,97 +120,23 @@ namespace PCRemote.UI
             DebugPrintHelper("当前状态：处理命令中...");
 
             ICommand commandHandler;
-            switch (command.ToLower())
-            {
-                case "shutdown":
-                case "关机":
-                    SendComment(weiboId, Resource.ShutdownCommand_Comment);
-                    commandHandler = new ShutdownCommand();
-                    break;
-                case "abortshutdown":
-                case "终止关机":
-                    SendComment(weiboId, Resource.AbortShutdownCommand_Comment);
-                    commandHandler = new AbortShutdownCommand();
-                    break;
-                case "restart":
-                case "重启":
-                    SendComment(weiboId, Resource.RestartCommand_Comment);
-                    commandHandler = new RestartCommand();
-                    break;
-                case "logoff":
-                case "注销":
-                    SendComment(weiboId, "#PC遥控器#正在帮您注销您的计算机。");
-                    commandHandler = new LogoffCommand();
-                    break;
-                case "volmute":
-                case "静音":
-                    SendComment(weiboId, Resource.VolMuteCommand_Comment);
-                    commandHandler = new VolMuteCommand(this);
-                    break;
-                case "cancelvolmute":
-                case "取消静音":
-                    SendComment(weiboId, Resource.VolUnMuteCommand_Comment);
-                    commandHandler = new VolMuteCommand(this);
-                    break;
-                case "volinc":
-                case "加大音量":
-                    SendComment(weiboId, Resource.VolIncCommand_Comment);
-                    commandHandler = new VolIncCommand(this);
-                    break;
-                case "voldec":
-                case "减小音量":
-                    SendComment(weiboId, Resource.VolDecCommand_Comment);
-                    commandHandler = new VolDecCommand(this);
-                    break;
-                case "darkscreen":
-                case "关闭显示器":
-                    SendComment(weiboId, "#PC遥控器#已经帮您关闭您的显示器。");
-                    commandHandler = new DarkScreenCommand();
-                    break;
-                case "screenshot":
-                case "截图":
-                case "屏幕截图":
-                    SendComment(weiboId, "#PC遥控器#正在上传你的屏幕截图，一会将会出现在你的最新微博中。");
-                    commandHandler = new ScreenshotCommand(_service);
-                    break;
-                case "play":
-                case "播放":
-                    SendComment(weiboId, "#PC遥控器#正在为您播放当前的多媒体文件。");
-                    commandHandler = new MediaCommand(MediaKey.PlayPause);
-                    break;
-                case "pause":
-                case "暂停":
-                    SendComment(weiboId, "#PC遥控器#已经帮您暂停播放当前的多媒体文件。");
-                    commandHandler = new MediaCommand(MediaKey.PlayPause);
-                    break;
-                case "next":
-                case "下一首":
-                    SendComment(weiboId, "#PC遥控器#正在为您播放下一个多媒体文件。");
-                    commandHandler = new MediaCommand(MediaKey.Next);
-                    break;
-                case "previous":
-                case "上一首":
-                    SendComment(weiboId, "#PC遥控器#正在为您播放上一个多媒体文件。");
-                    commandHandler = new MediaCommand(MediaKey.Previous);
-                    break;
-                case "camera":
-                case "拍照":
-                    SendComment(weiboId, "#PC遥控器#正在上传你的WebCam抓拍，一会将会出现在你的最新微博中。");
-                    commandHandler = new PhotoCommand(_service, this);
-                    break;
-                case "lock":
-                case "锁屏":
-                    SendComment(weiboId, "#PC遥控器#已经帮您锁住您的计算机的屏幕。");
-                    commandHandler = new LockCommand();
-                    break;
-                default:
-                    commandHandler = null;
-                    RunCustomCommands(weiboId, command);
-                    break;
-            }
 
-            if(commandHandler != null)
-                commandHandler.Execute();
+            if(_commands.ContainsKey(command))
+            {
+                commandHandler = _commands[command];
+                var context = new CommandContext
+                {
+                    WeiboId = weiboId,
+                    WeiboService = _service,
+                    Handle = Handle
+                };
+
+                commandHandler.Execute(context);
+            }
+            else
+            {
+                RunCustomCommands(weiboId, command);
+            }
         }
 
         private void RunCustomCommands(string weiboId, string command)
@@ -315,7 +247,6 @@ namespace PCRemote.UI
             }
 
             //最小化主窗口并在任务栏显示
-
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
             tmrPCRemote.Enabled = true;
@@ -509,7 +440,6 @@ namespace PCRemote.UI
             btnGetPin.Enabled = true;
 
             txtPin.Text = string.Empty;
-
         }
 
         void LockAccountSetup()

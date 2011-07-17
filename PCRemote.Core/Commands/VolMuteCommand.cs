@@ -1,8 +1,8 @@
 #region using
 
 using System;
-using System.Windows.Forms;
 using PCRemote.Core.Contracts;
+using PCRemote.Core.Entities;
 
 #endregion
 
@@ -10,18 +10,12 @@ namespace PCRemote.Core.Commands
 {
     public class VolMuteCommand : VolCommandBase, ICommand
     {
-        readonly Control _control;
-
-        public VolMuteCommand(Control control)
-        {
-            _control = control;
-        }
-
         #region Implementation of ICommand
 
-        public void Execute()
+        public void Execute(CommandContext context)
         {
-            SendMessageW(_control.Handle, WM_APPCOMMAND, _control.Handle, new IntPtr(APPCOMMAND_VOLUME_MUTE));
+            SendComment(context, "#PC遥控器#已经将您的计算机设为静音。取消静音，请发微博：取消静音$$任意内容。");
+            SendMessageW(context.Handle, WM_APPCOMMAND, context.Handle, new IntPtr(APPCOMMAND_VOLUME_MUTE));
         }
 
         #endregion

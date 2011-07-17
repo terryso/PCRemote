@@ -1,7 +1,9 @@
+using PCRemote.Core.Entities;
+
 namespace PCRemote.Core.Contracts
 {
     public interface ICommand
     {
-        void Execute();
+        void Execute(CommandContext context);
     }
 }
