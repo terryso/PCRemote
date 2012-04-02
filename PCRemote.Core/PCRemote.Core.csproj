@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject">
+      <HintPath>..\lib\Ninject-2.2.0.0-release-net-3.5\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="SocialKit.LightRest, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -48,7 +51,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AbortShutdownCommand.cs" />
+    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\MediaNextTrackCommand.cs" />
+    <Compile Include="Commands\MediaPauseCommand.cs" />
+    <Compile Include="Commands\MediaPreviousTrackCommand.cs" />
+    <Compile Include="Commands\MediaStopCommand.cs" />
+    <Compile Include="Commands\MediaPlayCommand.cs" />
+    <Compile Include="Commands\VolUnMuteCommand.cs" />
+    <Compile Include="Enums\MediaKey.cs" />
+    <Compile Include="Configuration\CommandConfiguration.cs" />
+    <Compile Include="Configuration\ConfigurationBase.cs" />
+    <Compile Include="Configuration\PCRemoteConfigurationHandler.cs" />
+    <Compile Include="Configuration\PCRemoteConfiguration.cs" />
     <Compile Include="Contracts\IWeiboService.cs" />
+    <Compile Include="Entities\CommandContext.cs" />
+    <Compile Include="NinjectModules\CommandModule.cs" />
     <Compile Include="QQWeiboService.cs" />
     <Compile Include="Entities\WeiboUser.cs" />
     <Compile Include="Global.cs" />
@@ -58,7 +75,6 @@
     <Compile Include="Contracts\ICommand.cs" />
     <Compile Include="Commands\LockCommand.cs" />
     <Compile Include="Commands\LogoffCommand.cs" />
-    <Compile Include="Commands\MediaCommand.cs" />
     <Compile Include="Commands\PhotoCommand.cs" />
     <Compile Include="Commands\ProcessListCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,11 +82,12 @@
     <Compile Include="Commands\ScreenshotCommand.cs" />
     <Compile Include="Commands\ShutdownCommand.cs" />
     <Compile Include="Configuration\GlobalSettings.cs" />
+    <Compile Include="Utilities\ThunderUtility.cs" />
+    <Compile Include="Utilities\CryptUtility.cs" />
     <Compile Include="Utilities\DosCommandUtility.cs" />
     <Compile Include="Utilities\EmailUtility.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="Utilities\InputUtility.cs" />
-    <Compile Include="Utilities\IPUtility.cs" />
     <Compile Include="Utilities\NetworkUtility.cs" />
     <Compile Include="Utilities\WebCamUtility.cs" />
     <Compile Include="Commands\VolCommandBase.cs" />

@@ -93,6 +93,7 @@ namespace PCRemote.UI
             this.txtFileName.Name = "txtFileName";
             this.txtFileName.Size = new System.Drawing.Size(270, 21);
             this.txtFileName.TabIndex = 10;
+            this.txtFileName.TextChanged += new System.EventHandler(this.txtFileName_TextChanged);
             // 
             // btnRemoveCommand
             // 
@@ -163,6 +164,7 @@ namespace PCRemote.UI
             this.label2.Size = new System.Drawing.Size(43, 13);
             this.label2.TabIndex = 11;
             this.label2.Text = "ÎÄ¼þ£º";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // CustomCommands
             // 

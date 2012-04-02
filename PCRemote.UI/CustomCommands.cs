@@ -181,5 +181,15 @@ namespace PCRemote.UI
 		        MessageBox.Show(ex.Message);
 		    }
 		}
+
+        private void txtFileName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
 	}
 }

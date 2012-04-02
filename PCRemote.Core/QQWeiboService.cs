@@ -11,6 +11,7 @@ using WeiboSDK.Enums;
 using WeiboSDK.Extensions;
 using WeiboSDK.Factories;
 using WeiboSDK.Request.QQ;
+using WeiboSDK.Utilities;
 
 namespace PCRemote.Core
 {

@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using PCRemote.DataAccess;
@@ -9,8 +9,7 @@ namespace PCRemote.Tests
     [TestFixture]
     public class DataAccessTests
     {
-        PCRemoteDB _db;
-        SimpleRepository _repo;
+        #region Setup/Teardown
 
         [SetUp]
         public void Init()
@@ -19,36 +18,10 @@ namespace PCRemote.Tests
             _repo = new SimpleRepository(_db.Provider);
         }
 
-        [Test]
-        public void Insert_Data_Test()
-        {
+        #endregion
 
-            // Arrange
-            var user = new Command()
-            {
-                CommandName = "Test"
-            };
-
-            // Act
-            _repo.Add(user);
-
-            // Assert
-
-        }
-
-        [Test]
-        public void Update_Data_Test()
-        {
-            // Arrange
-            var user = _repo.Find<Command>(u => u.CommandName == "Test").SingleOrDefault();
-
-            // Act
-            user.CommandName = "Update User Name";
-            _repo.Update(user);
-
-            // Assert
-
-        }
+        PCRemoteDB _db;
+        SimpleRepository _repo;
 
         [Test]
         public void Delete_Data_Test()
@@ -59,7 +32,6 @@ namespace PCRemote.Tests
             _repo.Delete<Command>("Test");
 
             // Assert
-
         }
 
         [Test]
@@ -67,10 +39,38 @@ namespace PCRemote.Tests
         {
             var db = new PCRemoteDB();
 
-            var users = (from u in db.Commands
-                         select u).ToList();
+            List<Command> users = (from u in db.Commands
+                                   select u).ToList();
 
             Assert.IsTrue(users.Count > 0);
+        }
+
+        [Test]
+        public void Insert_Data_Test()
+        {
+            // Arrange
+            var user = new Command
+            {
+                CommandName = "Test"
+            };
+
+            // Act
+            _repo.Add(user);
+
+            // Assert
+        }
+
+        [Test]
+        public void Update_Data_Test()
+        {
+            // Arrange
+            Command user = _repo.Find<Command>(u => u.CommandName == "Test").SingleOrDefault();
+
+            // Act
+            user.CommandName = "Update User Name";
+            _repo.Update(user);
+
+            // Assert
         }
     }
 }

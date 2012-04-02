@@ -2,6 +2,7 @@
 
 using System;
 using PCRemote.Core.Contracts;
+using PCRemote.Core.Entities;
 using WeiboSDK.Contracts;
 
 #endregion
@@ -10,16 +11,9 @@ namespace PCRemote.Core.Commands
 {
     public class ProcessListCommand : ICommand
     {
-        readonly IWeiboService _service;
-
-        public ProcessListCommand(IWeiboService service)
-        {
-            _service = service;
-        }
-
         #region ICommand Members
 
-        public void Execute()
+        public void Execute(CommandContext context)
         {
             throw new NotImplementedException();
         }
