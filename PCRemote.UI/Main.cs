@@ -66,32 +66,27 @@ namespace PCRemote.UI
             NotifyIcon.Text = @"正在处理声音命令...";
             DebugPrintHelper("当前状态：处理声音命令中...");
 
-            var account = new EmailAccount
-            {
-                AccountName = "pcremotemaster@gmail.com",
-                AccountPassword = "pcremotemaster",
-                IsEnableSSL = true,
-                Port = 587,
-                SmtpServer = "smtp.gmail.com",
-                DisplayName = "PC遥控器"
-            };
-
-            var context = new CommandContext
-            {
-                WeiboId = null,
-                WeiboService = _service,
-                //Handle = handle,
-                SendPhotoByEmail = Settings.Default.SendPhotoByEmail,
-                MailUtility = new MailUtility(account),
-                To = Settings.Default.MyEmailAddress,
-                DownloadPath = Settings.Default.DownloadPath
-            };
-
+            var account = CreatePCRemoteEmailAccount();
+            var context = CreateCommandContext(account);
             if (_commands.ContainsKey(command.ToLower()))
             {
                 var commandHandler = _commands[command.ToLower()];
                 commandHandler.Execute(context);
             }
+        }
+
+        private static EmailAccount CreatePCRemoteEmailAccount()
+        {
+            var account = new EmailAccount
+                              {
+                                  AccountName = "your email address",
+                                  AccountPassword = "your email password",
+                                  IsEnableSSL = true,
+                                  Port = 587,
+                                  SmtpServer = "smtp server",
+                                  DisplayName = "PC遥控器"
+                              };
+            return account;
         }
 
         private void tmrPCRemote_Tick(object sender, EventArgs e)
@@ -186,26 +181,8 @@ namespace PCRemote.UI
 
             ICommand commandHandler;
 
-            var account = new EmailAccount
-            {
-                AccountName = "pcremotemaster@gmail.com",
-                AccountPassword = "pcremotemaster",
-                IsEnableSSL = true,
-                Port = 587,
-                SmtpServer = "smtp.gmail.com",
-                DisplayName = "PC遥控器"
-            };
-
-            var context = new CommandContext
-            {
-                WeiboId = weiboId,
-                WeiboService = _service,
-                Handle = Handle,
-                SendPhotoByEmail = Settings.Default.SendPhotoByEmail,
-                MailUtility = new MailUtility(account),
-                To = Settings.Default.MyEmailAddress,
-                DownloadPath = Settings.Default.DownloadPath
-            };
+            var account = CreatePCRemoteEmailAccount();
+            var context = CreateCommandContext(weiboId, Handle, account);
 
             var splitCommand = command.Split(' ')[0].ToLower();
             if(_commands.ContainsKey(command.ToLower()))
@@ -227,6 +204,34 @@ namespace PCRemote.UI
             {
                 RunCustomCommands(weiboId, command);
             }
+        }
+
+        private CommandContext CreateCommandContext(EmailAccount account)
+        {
+            var context = new CommandContext
+            {
+                WeiboService = _service,
+                SendPhotoByEmail = Settings.Default.SendPhotoByEmail,
+                MailUtility = new MailUtility(account),
+                To = Settings.Default.MyEmailAddress,
+                DownloadPath = Settings.Default.DownloadPath
+            };
+            return context;   
+        }
+
+        private CommandContext CreateCommandContext(string weiboId, IntPtr handle, EmailAccount account)
+        {
+            var context = new CommandContext
+                              {
+                                  WeiboId = weiboId,
+                                  WeiboService = _service,
+                                  Handle = handle,
+                                  SendPhotoByEmail = Settings.Default.SendPhotoByEmail,
+                                  MailUtility = new MailUtility(account),
+                                  To = Settings.Default.MyEmailAddress,
+                                  DownloadPath = Settings.Default.DownloadPath
+                              };
+            return context; 
         }
 
         private void RunCustomCommands(string weiboId, string command)
