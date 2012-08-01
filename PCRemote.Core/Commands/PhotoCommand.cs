@@ -4,7 +4,6 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Windows.Forms;
 using PCRemote.Core.Contracts;
 using PCRemote.Core.Entities;
 using PCRemote.Core.Utilities;
@@ -15,21 +14,10 @@ namespace PCRemote.Core.Commands
 {
     public class PhotoCommand : CommandBase, ICommand
     {
-        public PhotoCommand()
-        {
-            
-        }
-
-        public PhotoCommand(IWeiboService client, Control control)
-        {
-        }
-
         #region ICommand Members
 
         public void Execute(CommandContext context)
         {
-            SendComment(context, "#PC遥控器#正在上传你的WebCam抓拍，一会将会出现在你的最新微博中。");
-
             Bitmap bitmap = null;
             EncoderParameters encoderParams = null;
             EncoderParameter parameter = null;
@@ -54,7 +42,17 @@ namespace PCRemote.Core.Commands
                 var newPicPath = picPath.Replace("bmp", "jpg");
                 bitmap.Save(newPicPath, codecInfo, encoderParams);
 
-                context.WeiboService.SendWeiboWithPicture("我正在使用#PC遥控器#分享我的WebCam抓拍 " + DateTime.Now.ToLongTimeString(), newPicPath);
+                if (context.SendPhotoByEmail)
+                {
+                    SendComment(context, "#PC遥控器#正在发送你的WebCam抓拍到你的指定Email中，请过一会去查收。");
+                    SendPhotoByEmail(context, newPicPath);
+                }
+                else
+                {
+                    SendComment(context, "#PC遥控器#正在上传你的WebCam抓拍，一会将会出现在你的最新微博中。");
+                    context.WeiboService.SendWeiboWithPicture("我正在使用#PC遥控器#分享我的WebCam抓拍 " + DateTime.Now.ToLongTimeString(), newPicPath);
+                }
+
             }
             finally
             {
@@ -70,6 +68,16 @@ namespace PCRemote.Core.Commands
         {
             var imageEncoders = ImageCodecInfo.GetImageEncoders();
             return imageEncoders.FirstOrDefault(info => info.MimeType == mimeType);
+        }
+
+        static void SendPhotoByEmail(CommandContext context, string picPath)
+        {
+            var title = "我的WebCam抓拍@" + DateTime.Now;
+            var body = "此图由<a href='http://weibo.com/k/PC%25E9%2581%25A5%25E6%258E%25A7%25E5%2599%25A8?refer=Index_mark'>#PC遥控器#</a>自动发送，请不要回复。<br/>" +
+                        "请问题请<a href='http://weibo.com/suchuanyi'>@四眼蒙面侠</a>";
+            var to = context.MailUtility.Account.AccountName;
+
+            context.MailUtility.Send(to, title, body, picPath);
         }
     }
 }

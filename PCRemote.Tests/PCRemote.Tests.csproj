@@ -54,7 +54,10 @@
     <Compile Include="ConfigurationTests.cs" />
     <Compile Include="DataAccessTests.cs" />
     <Compile Include="EmailUtilityTests.cs" />
+    <Compile Include="InstagramGraberTests.cs" />
     <Compile Include="IoCTests.cs" />
+    <Compile Include="BaiduMp3GraberTests.cs" />
+    <Compile Include="NetworkUtilityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThunderTests.cs" />
   </ItemGroup>

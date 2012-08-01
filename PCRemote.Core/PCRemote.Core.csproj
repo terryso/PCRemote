@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\lib\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack.Extensions">
+      <HintPath>..\lib\HtmlAgilityPack.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\lib\Ninject-2.2.0.0-release-net-3.5\Ninject.dll</HintPath>
     </Reference>
@@ -52,12 +58,18 @@
   <ItemGroup>
     <Compile Include="Commands\AbortShutdownCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\GetFileListCommand.cs" />
+    <Compile Include="Commands\InstagramCommand.cs" />
     <Compile Include="Commands\MediaNextTrackCommand.cs" />
     <Compile Include="Commands\MediaPauseCommand.cs" />
     <Compile Include="Commands\MediaPreviousTrackCommand.cs" />
     <Compile Include="Commands\MediaStopCommand.cs" />
     <Compile Include="Commands\MediaPlayCommand.cs" />
+    <Compile Include="Commands\Mp3Command.cs" />
     <Compile Include="Commands\VolUnMuteCommand.cs" />
+    <Compile Include="Entities\BaiduResult.cs" />
+    <Compile Include="Entities\EmailAccount.cs" />
+    <Compile Include="Contracts\IMailUtility.cs" />
     <Compile Include="Enums\MediaKey.cs" />
     <Compile Include="Configuration\CommandConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationBase.cs" />
@@ -82,10 +94,13 @@
     <Compile Include="Commands\ScreenshotCommand.cs" />
     <Compile Include="Commands\ShutdownCommand.cs" />
     <Compile Include="Configuration\GlobalSettings.cs" />
+    <Compile Include="Enums\EmailPriorityEnum.cs" />
+    <Compile Include="Utilities\BaiduMp3Graber.cs" />
+    <Compile Include="Utilities\InstagramGraber.cs" />
     <Compile Include="Utilities\ThunderUtility.cs" />
     <Compile Include="Utilities\CryptUtility.cs" />
     <Compile Include="Utilities\DosCommandUtility.cs" />
-    <Compile Include="Utilities\EmailUtility.cs" />
+    <Compile Include="Utilities\MailUtility.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="Utilities\InputUtility.cs" />
     <Compile Include="Utilities\NetworkUtility.cs" />

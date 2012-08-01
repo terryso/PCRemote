@@ -12,6 +12,9 @@ namespace PCRemote.Tests
         {
             string result = DosCommandUtility.RunCmd("tasklist");
             Console.WriteLine(result);
+
+
+            Console.Write(Environment.CurrentDirectory );
         }
     }
 }

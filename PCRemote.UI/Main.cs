@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Speech.Recognition;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using PCRemote.Core;
 using PCRemote.Core.Configuration;
 using PCRemote.Core.Contracts;
 using PCRemote.Core.Entities;
+using PCRemote.Core.Utilities;
 using PCRemote.DataAccess.Repositories;
 using PCRemote.UI.Factories;
 using PCRemote.UI.Properties;
@@ -25,12 +27,71 @@ namespace PCRemote.UI
         IDictionary<string, ICommand> _commands;
 
         public Main()
-        {
+        {   
             InitializeComponent();
+            InitVoiceCommands();
+
             ddlWeibo.SelectedIndex = 0;
-
             _commands = CommandConfiguration.GetConfig().Commands;
+        }
 
+        private void InitVoiceCommands()
+        {
+            var recognizer = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("zh-CN"));
+
+            // Create a grammar.
+            var voiceCommands = new Choices(new[]
+                                                {
+                                                    "关机", "注销", "重启", "终止关机", "截图", "屏幕截图",
+                                                    "播放", "暂停", "下一首", "上一首", "锁屏"
+                                                });
+            var grammarBuilder = new GrammarBuilder();
+            grammarBuilder.Append(voiceCommands);
+
+            var grammar = new Grammar(grammarBuilder);
+            grammar.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(g_SpeechRecognized);
+
+            recognizer.SetInputToDefaultAudioDevice();
+            recognizer.LoadGrammar(grammar);
+            recognizer.RecognizeAsync(RecognizeMode.Multiple);
+        }
+
+        void g_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        {
+            ProcessVoiceCommand(e.Result.Text);
+        }
+
+        private void ProcessVoiceCommand(string command)
+        {
+            NotifyIcon.Text = @"正在处理声音命令...";
+            DebugPrintHelper("当前状态：处理声音命令中...");
+
+            var account = new EmailAccount
+            {
+                AccountName = "pcremotemaster@gmail.com",
+                AccountPassword = "pcremotemaster",
+                IsEnableSSL = true,
+                Port = 587,
+                SmtpServer = "smtp.gmail.com",
+                DisplayName = "PC遥控器"
+            };
+
+            var context = new CommandContext
+            {
+                WeiboId = null,
+                WeiboService = _service,
+                //Handle = handle,
+                SendPhotoByEmail = Settings.Default.SendPhotoByEmail,
+                MailUtility = new MailUtility(account),
+                To = Settings.Default.MyEmailAddress,
+                DownloadPath = Settings.Default.DownloadPath
+            };
+
+            if (_commands.ContainsKey(command.ToLower()))
+            {
+                var commandHandler = _commands[command.ToLower()];
+                commandHandler.Execute(context);
+            }
         }
 
         private void tmrPCRemote_Tick(object sender, EventArgs e)
@@ -43,7 +104,7 @@ namespace PCRemote.UI
 
             NotifyIcon.Text = @"正在检查是否有新的微博...";
             DebugPrintHelper("当前状态：正在检查是否有新的微博...");
-            
+
             //检查用户账号是否合法
             try
             {
@@ -55,14 +116,18 @@ namespace PCRemote.UI
                 DebugPrintHelper("错误：用户登录失败。\n" + ex.Message);
                 tmrPCRemote.Enabled = true;
             }
-            
+
             //检查新微博
             try
             {
                 var status = _service.GetMyFirstWeibo();
-                if(status.Id.Trim() != Settings.Default.LastID.Trim())
+                if (status.Id.Trim() != Settings.Default.LastID.Trim())
                 {
                     Settings.Default.LastID = status.Id.Trim();
+                    Settings.Default.IdsToClear += string.IsNullOrEmpty(Settings.Default.IdsToClear)
+                                                       ? status.Id.Trim()
+                                                       : "," + status.Id.Trim();
+
                     Settings.Default.Save();
 
                     //把最新的一条微博的命令部分拆出来
@@ -121,16 +186,41 @@ namespace PCRemote.UI
 
             ICommand commandHandler;
 
-            if(_commands.ContainsKey(command))
+            var account = new EmailAccount
             {
-                commandHandler = _commands[command];
-                var context = new CommandContext
-                {
-                    WeiboId = weiboId,
-                    WeiboService = _service,
-                    Handle = Handle
-                };
+                AccountName = "pcremotemaster@gmail.com",
+                AccountPassword = "pcremotemaster",
+                IsEnableSSL = true,
+                Port = 587,
+                SmtpServer = "smtp.gmail.com",
+                DisplayName = "PC遥控器"
+            };
 
+            var context = new CommandContext
+            {
+                WeiboId = weiboId,
+                WeiboService = _service,
+                Handle = Handle,
+                SendPhotoByEmail = Settings.Default.SendPhotoByEmail,
+                MailUtility = new MailUtility(account),
+                To = Settings.Default.MyEmailAddress,
+                DownloadPath = Settings.Default.DownloadPath
+            };
+
+            var splitCommand = command.Split(' ')[0].ToLower();
+            if(_commands.ContainsKey(command.ToLower()))
+            {
+                commandHandler = _commands[command.ToLower()];
+                commandHandler.Execute(context);
+            }
+            else if(_commands.ContainsKey(splitCommand))
+            {
+                commandHandler = _commands[splitCommand];
+                var parameter = command.Remove(0, splitCommand.Length);
+                if(parameter.StartsWith(" "))
+                    parameter = parameter.Remove(0, 1);
+
+                context.CommandParameter = parameter;
                 commandHandler.Execute(context);
             }
             else
@@ -246,6 +336,19 @@ namespace PCRemote.UI
                 return;
             }
 
+            //保存邮箱信息
+            Settings.Default.MyEmailAddress = txtMyEmailAddress.Text.Trim();
+            Settings.Default.SendPhotoByEmail = chkSendPhotoByEmail.Checked;
+            Settings.Default.AutoClear = chkClear.Checked;
+
+            if(!Directory.Exists(txtDownloadPath.Text))
+            {
+                MessageBox.Show("下载目录不存在，请重新选择");
+                return;
+            }
+            Settings.Default.DownloadPath = txtDownloadPath.Text;
+            Settings.Default.Save();
+
             //最小化主窗口并在任务栏显示
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
@@ -349,6 +452,11 @@ namespace PCRemote.UI
             ShowInTaskbar = false;
 
             chkAutoStart.Checked = Settings.Default.AutomaticStart;
+            chkSendPhotoByEmail.Checked = Settings.Default.SendPhotoByEmail;
+            //chkClear.Checked = Settings.Default.AutoClear;
+
+            txtMyEmailAddress.Text = Settings.Default.MyEmailAddress;
+            txtDownloadPath.Text = Settings.Default.DownloadPath;
 
             DebugPrintHelper("---");
             DebugPrintHelper("---");
@@ -452,5 +560,19 @@ namespace PCRemote.UI
         }
 
         #endregion
+
+        private void btnSelect_Click(object sender, EventArgs e)
+        {
+            var folderBrowserDialog = new FolderBrowserDialog();
+            folderBrowserDialog.RootFolder = Environment.SpecialFolder.MyComputer;
+            folderBrowserDialog.ShowDialog();
+            var folderName = folderBrowserDialog.SelectedPath;                     //获得选择的文件夹路径
+            txtDownloadPath.Text = folderName;
+        }
+
+        private void tmrClear_Tick(object sender, EventArgs e)
+        {
+
+        }
     }
 }

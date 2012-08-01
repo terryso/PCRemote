@@ -11,6 +11,12 @@ namespace PCRemote.Core.Contracts
         void SendWeibo(string weibo);
 
         /// <summary>
+        /// 移除一条微博
+        /// </summary>
+        /// <param name="weiboId">微博Id</param>
+        void RemoveWeibo(string weiboId);
+
+        /// <summary>
         /// 发送一条带图片的微博
         /// </summary>
         /// <param name="weibo">微博内容</param>

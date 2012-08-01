@@ -51,22 +51,34 @@
             this.helpSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.groupAccount = new System.Windows.Forms.GroupBox();
-            this.chkAutoStart = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.ddlWeibo = new System.Windows.Forms.ComboBox();
-            this.txtPin = new System.Windows.Forms.TextBox();
+            this.chkClear = new System.Windows.Forms.CheckBox();
             this.btnGetPin = new System.Windows.Forms.Button();
+            this.txtPin = new System.Windows.Forms.TextBox();
+            this.ddlWeibo = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.chkAutoStart = new System.Windows.Forms.CheckBox();
+            this.groupEmail = new System.Windows.Forms.GroupBox();
+            this.chkSendPhotoByEmail = new System.Windows.Forms.CheckBox();
+            this.txtMyEmailAddress = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSelect = new System.Windows.Forms.Button();
+            this.txtDownloadPath = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tmrClear = new System.Windows.Forms.Timer(this.components);
             this.RightMenu.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.groupAccount.SuspendLayout();
+            this.groupEmail.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(21, 197);
+            this.btnSave.Location = new System.Drawing.Point(21, 426);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(258, 61);
+            this.btnSave.Size = new System.Drawing.Size(258, 66);
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "保  存";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -74,7 +86,7 @@
             // 
             // tmrPCRemote
             // 
-            this.tmrPCRemote.Interval = 7000;
+            this.tmrPCRemote.Interval = 60000;
             this.tmrPCRemote.Tick += new System.EventHandler(this.tmrPCRemote_Tick);
             // 
             // RightMenu
@@ -221,47 +233,49 @@
             // 
             // groupAccount
             // 
+            this.groupAccount.Controls.Add(this.chkClear);
             this.groupAccount.Controls.Add(this.btnGetPin);
             this.groupAccount.Controls.Add(this.txtPin);
             this.groupAccount.Controls.Add(this.ddlWeibo);
             this.groupAccount.Controls.Add(this.label2);
             this.groupAccount.Controls.Add(this.label1);
             this.groupAccount.Controls.Add(this.chkAutoStart);
-            this.groupAccount.Location = new System.Drawing.Point(21, 42);
+            this.groupAccount.Location = new System.Drawing.Point(21, 46);
             this.groupAccount.Name = "groupAccount";
-            this.groupAccount.Size = new System.Drawing.Size(258, 139);
+            this.groupAccount.Size = new System.Drawing.Size(258, 151);
             this.groupAccount.TabIndex = 5;
             this.groupAccount.TabStop = false;
             this.groupAccount.Text = "微博账号设置";
             // 
-            // chkAutoStart
+            // chkClear
             // 
-            this.chkAutoStart.AutoSize = true;
-            this.chkAutoStart.Location = new System.Drawing.Point(82, 105);
-            this.chkAutoStart.Name = "chkAutoStart";
-            this.chkAutoStart.Size = new System.Drawing.Size(96, 16);
-            this.chkAutoStart.TabIndex = 2;
-            this.chkAutoStart.Text = "开机自动登录";
-            this.chkAutoStart.UseVisualStyleBackColor = true;
-            this.chkAutoStart.CheckedChanged += new System.EventHandler(this.chkAutoStart_CheckedChanged);
+            this.chkClear.AutoSize = true;
+            this.chkClear.Checked = true;
+            this.chkClear.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkClear.Enabled = false;
+            this.chkClear.Location = new System.Drawing.Point(80, 122);
+            this.chkClear.Name = "chkClear";
+            this.chkClear.Size = new System.Drawing.Size(98, 17);
+            this.chkClear.TabIndex = 8;
+            this.chkClear.Text = "启用声控命令";
+            this.chkClear.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // btnGetPin
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 36);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "微  博：";
+            this.btnGetPin.Location = new System.Drawing.Point(174, 68);
+            this.btnGetPin.Name = "btnGetPin";
+            this.btnGetPin.Size = new System.Drawing.Size(75, 25);
+            this.btnGetPin.TabIndex = 7;
+            this.btnGetPin.Text = "获取授权码";
+            this.btnGetPin.UseVisualStyleBackColor = true;
+            this.btnGetPin.Click += new System.EventHandler(this.btnGetPin_Click);
             // 
-            // label2
+            // txtPin
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 68);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 12);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "授权码：";
+            this.txtPin.Location = new System.Drawing.Point(68, 68);
+            this.txtPin.Name = "txtPin";
+            this.txtPin.Size = new System.Drawing.Size(100, 20);
+            this.txtPin.TabIndex = 6;
             // 
             // ddlWeibo
             // 
@@ -270,34 +284,129 @@
             this.ddlWeibo.Items.AddRange(new object[] {
             "新浪微博",
             "腾讯微博"});
-            this.ddlWeibo.Location = new System.Drawing.Point(68, 33);
+            this.ddlWeibo.Location = new System.Drawing.Point(68, 36);
             this.ddlWeibo.Name = "ddlWeibo";
-            this.ddlWeibo.Size = new System.Drawing.Size(100, 20);
+            this.ddlWeibo.Size = new System.Drawing.Size(100, 21);
             this.ddlWeibo.TabIndex = 5;
             // 
-            // txtPin
+            // label2
             // 
-            this.txtPin.Location = new System.Drawing.Point(68, 63);
-            this.txtPin.Name = "txtPin";
-            this.txtPin.Size = new System.Drawing.Size(100, 21);
-            this.txtPin.TabIndex = 6;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(17, 74);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(55, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "授权码：";
             // 
-            // btnGetPin
+            // label1
             // 
-            this.btnGetPin.Location = new System.Drawing.Point(174, 63);
-            this.btnGetPin.Name = "btnGetPin";
-            this.btnGetPin.Size = new System.Drawing.Size(75, 23);
-            this.btnGetPin.TabIndex = 7;
-            this.btnGetPin.Text = "获取授权码";
-            this.btnGetPin.UseVisualStyleBackColor = true;
-            this.btnGetPin.Click += new System.EventHandler(this.btnGetPin_Click);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(17, 39);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(49, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "微  博：";
+            // 
+            // chkAutoStart
+            // 
+            this.chkAutoStart.AutoSize = true;
+            this.chkAutoStart.Location = new System.Drawing.Point(80, 99);
+            this.chkAutoStart.Name = "chkAutoStart";
+            this.chkAutoStart.Size = new System.Drawing.Size(98, 17);
+            this.chkAutoStart.TabIndex = 2;
+            this.chkAutoStart.Text = "开机自动登录";
+            this.chkAutoStart.UseVisualStyleBackColor = true;
+            this.chkAutoStart.CheckedChanged += new System.EventHandler(this.chkAutoStart_CheckedChanged);
+            // 
+            // groupEmail
+            // 
+            this.groupEmail.Controls.Add(this.chkSendPhotoByEmail);
+            this.groupEmail.Controls.Add(this.txtMyEmailAddress);
+            this.groupEmail.Controls.Add(this.label3);
+            this.groupEmail.Location = new System.Drawing.Point(21, 212);
+            this.groupEmail.Name = "groupEmail";
+            this.groupEmail.Size = new System.Drawing.Size(258, 104);
+            this.groupEmail.TabIndex = 6;
+            this.groupEmail.TabStop = false;
+            this.groupEmail.Text = "邮箱设置";
+            // 
+            // chkSendPhotoByEmail
+            // 
+            this.chkSendPhotoByEmail.AutoSize = true;
+            this.chkSendPhotoByEmail.Location = new System.Drawing.Point(54, 69);
+            this.chkSendPhotoByEmail.Name = "chkSendPhotoByEmail";
+            this.chkSendPhotoByEmail.Size = new System.Drawing.Size(158, 17);
+            this.chkSendPhotoByEmail.TabIndex = 11;
+            this.chkSendPhotoByEmail.Text = "通过邮件发送截图和拍照";
+            this.chkSendPhotoByEmail.UseVisualStyleBackColor = true;
+            // 
+            // txtMyEmailAddress
+            // 
+            this.txtMyEmailAddress.Location = new System.Drawing.Point(80, 30);
+            this.txtMyEmailAddress.Name = "txtMyEmailAddress";
+            this.txtMyEmailAddress.Size = new System.Drawing.Size(169, 20);
+            this.txtMyEmailAddress.TabIndex = 8;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(11, 33);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(67, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "邮箱地址：";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnSelect);
+            this.groupBox1.Controls.Add(this.txtDownloadPath);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Location = new System.Drawing.Point(21, 337);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(258, 70);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "文件下载";
+            // 
+            // btnSelect
+            // 
+            this.btnSelect.Location = new System.Drawing.Point(200, 25);
+            this.btnSelect.Name = "btnSelect";
+            this.btnSelect.Size = new System.Drawing.Size(43, 25);
+            this.btnSelect.TabIndex = 9;
+            this.btnSelect.Text = "浏览";
+            this.btnSelect.UseVisualStyleBackColor = true;
+            this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
+            // 
+            // txtDownloadPath
+            // 
+            this.txtDownloadPath.Location = new System.Drawing.Point(80, 30);
+            this.txtDownloadPath.Name = "txtDownloadPath";
+            this.txtDownloadPath.Size = new System.Drawing.Size(114, 20);
+            this.txtDownloadPath.TabIndex = 8;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(11, 33);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(67, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "下载目录：";
+            // 
+            // tmrClear
+            // 
+            this.tmrClear.Interval = 60000;
+            this.tmrClear.Tick += new System.EventHandler(this.tmrClear_Tick);
             // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(299, 275);
+            this.ClientSize = new System.Drawing.Size(299, 504);
             this.ContextMenuStrip = this.RightMenu;
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupEmail);
             this.Controls.Add(this.MainMenu);
             this.Controls.Add(this.groupAccount);
             this.Controls.Add(this.btnSave);
@@ -314,6 +423,10 @@
             this.MainMenu.PerformLayout();
             this.groupAccount.ResumeLayout(false);
             this.groupAccount.PerformLayout();
+            this.groupEmail.ResumeLayout(false);
+            this.groupEmail.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -348,6 +461,16 @@
         private System.Windows.Forms.ComboBox ddlWeibo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.GroupBox groupEmail;
+        private System.Windows.Forms.CheckBox chkSendPhotoByEmail;
+        private System.Windows.Forms.TextBox txtMyEmailAddress;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btnSelect;
+        private System.Windows.Forms.TextBox txtDownloadPath;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox chkClear;
+        private System.Windows.Forms.Timer tmrClear;
     }
 }
 

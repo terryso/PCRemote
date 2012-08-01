@@ -9,6 +9,10 @@ namespace PCRemote.Core.Commands
         {
             var weiboService = context.WeiboService;
             var weiboId = context.WeiboId;
+
+            if(string.IsNullOrEmpty(weiboId))
+                return;
+            
             try
             {
                 if (weiboService is SinaWeiboService)
